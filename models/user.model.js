@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 
-const userDetailsSchema = mongoose.Schema({
+const userDetails = {
     firstName:{
 	type: String,
 	required: true
@@ -22,4 +22,16 @@ const userDetailsSchema = mongoose.Schema({
 	type: Number,
 	required: true
     }
+}
+
+const userSchema = mongoose.Schema({
+    details: userDetails,
+    isDev: Boolean,
+    isAdmin: Boolean,
+    isMember: Boolean
 })
+
+export const User = mongoose.model(
+    'user',
+    userSchema
+)
