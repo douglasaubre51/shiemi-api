@@ -14,12 +14,16 @@ export const SignUp = async ( req, res ) =>{
     } = req.body
 
     try{
-	const newUser = User({
+	const details = {
 	    firstName,
 	    lastName,
 	    email,
 	    password,
 	    phoneNo
+	}
+
+	const newUser = User({
+	    details
 	})
 
 	newUser.save()
@@ -33,7 +37,7 @@ export const SignUp = async ( req, res ) =>{
     }
 
     console.log(`user account created!`)
-    return res.status(201)
+    return res.status(201).end()
 }
 
 // sign in
