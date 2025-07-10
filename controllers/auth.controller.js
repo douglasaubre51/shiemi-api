@@ -5,7 +5,7 @@ import { User } from '../models/user.model.js'
 
 
 export const SignUp = async ( req, res ) =>{
-    const {
+    let {
 	firstName,
 	lastName,
 	email,
@@ -14,6 +14,8 @@ export const SignUp = async ( req, res ) =>{
     } = req.body
 
     try{
+	password = await bcrypt.hash( password, 10 )
+
 	const details = {
 	    firstName,
 	    lastName,
