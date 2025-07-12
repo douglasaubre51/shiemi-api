@@ -16,7 +16,7 @@ mongoose.connect(
     'mongodb+srv://allen:chancellor66@neliel.ptcuka3.mongodb.net/shiemidb?retryWrites=true&w=majority&appName=Neliel'
 )
 .then(
-    () => console.log(`connected to neliel db cluster`)
+    () => console.log(`connected to neliel db cluster\nserver running!`)
 )
 .catch(
     (e) => console.log(`db connection error!\n${e.message}`)
@@ -28,6 +28,6 @@ app.use(Router)
 app.listen( 
     port,
     () =>{
-	console.log(`shiemi app is listening...`)
+	console.log(`started server!`)
     }
 )

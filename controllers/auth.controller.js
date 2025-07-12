@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt'
 import { User } from '../models/user.model.js'
 
 
+// signup
 export const SignUp = async ( req, res ) =>{
     let {
 	firstName,
@@ -14,8 +15,15 @@ export const SignUp = async ( req, res ) =>{
     } = req.body
 
     try{
+	const existingUser = await User.findOne({ 'details.email': email })
+	if( existingUser ){
+	    return res.status(400).send('email already exists!')
+	}
+
+	// hash password
 	password = await bcrypt.hash( password, 10 )
 
+	// create new user
 	const details = {
 	    firstName,
 	    lastName,
@@ -23,70 +31,55 @@ export const SignUp = async ( req, res ) =>{
 	    password,
 	    phoneNo
 	}
-
 	const newUser = User({
 	    details
 	})
-
 	newUser.save()
+
     }catch(e){ 
 	console.log(`error creating user account!\n${e.message}`)
 	return res
 	    .status(400)
-	    .json({
-		message: `error during sign up!`
-	    })
+	    .send('Server signup error!')
     }
 
-    console.log(`user account created!`)
     return res.status(201).end()
 }
 
 // sign in
 export const SignIn = async ( req, res ) =>{
-    console.log("signing in!");
     const {
 	email,
 	password
     } = req.body
 
     try{
+	// fetch user
 	const getUser = await User.findOne({ 'details.email': email })
-
 	if ( !getUser ){
-	    console.log(`account doesnot exist!`)
 	    return res
 		.status(400)
-		.json({
-		    message: `account doesnot exist!`
-		})
+		.send(`account doesnot exist!`)
 	}
 
-	console.log(`password: ${password} & getUser password: ${getUser.details.password}`)
-
+	// compare passwords
 	const checkPassword = await bcrypt.compare(
 	    password,
 	    getUser.details.password
 	)
-
 	if( checkPassword == false ){
-	    console.log(`wrong password!`)
 	    return res
 		.status(400)
-		.json({
-		    message: `wrong password!`
-		})
+	    .send('invalid password!')
 	}
+
     }catch(e){
-	console.log(`error during sign in!${e.message}`)
 	return res
 	    .status(400)
-	    .json({
-		message: `error during sign in${e.message}!`
-	    })
+	.send('Server signin error!')
     }
 
-    console.log(`user logged in`)
+    // success
     return res.status(200).json({
 	message: 'user logged in'
     })
