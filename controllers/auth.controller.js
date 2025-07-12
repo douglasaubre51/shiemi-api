@@ -43,6 +43,8 @@ export const SignUp = async ( req, res ) =>{
 	    .send('Server signup error!')
     }
 
+    // success
+    console.log(`${ firstName } created new account!`)
     return res.status(201).end()
 }
 
@@ -80,6 +82,7 @@ export const SignIn = async ( req, res ) =>{
     }
 
     // success
+    console.log(`${ email } signed in!`)
     return res.status(200).json({
 	message: 'user logged in'
     })
