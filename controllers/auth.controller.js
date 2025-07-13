@@ -55,6 +55,8 @@ export const SignIn = async ( req, res ) =>{
 	password
     } = req.body
 
+    let userId = null;
+
     try{
 	// fetch user
 	const getUser = await User.findOne({ 'details.email': email })
@@ -75,7 +77,12 @@ export const SignIn = async ( req, res ) =>{
 	    .send('invalid password!')
 	}
 
+	// get userId
+	userId = getUser['_id'].toString()
+	console.log(`user id: ${userId}`)
+
     }catch(e){
+	console.log(`signin error: ${e}`)
 	return res
 	    .status(400)
 	.send('Server signin error!')
@@ -84,6 +91,6 @@ export const SignIn = async ( req, res ) =>{
     // success
     console.log(`${ email } signed in!`)
     return res.status(200).json({
-	message: 'user logged in'
+	userId: userId
     })
 }
