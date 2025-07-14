@@ -3,15 +3,14 @@ import express from 'express'
 import { SignUp, SignIn } from '../controllers/auth.controller.js'
 
 
-export const Router = express.Router()
+export const authRouter = express.Router()
 
-Router
-.post(
+authRouter.post(
     '/sign-up',
     SignUp
 )
 
-Router.post(
+authRouter.post(
     '/sign-in',
     SignIn
 )
