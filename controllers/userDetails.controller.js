@@ -9,14 +9,19 @@ export const GetUserDetails = async ( req, res ) =>{
     console.log(`user id : ${user_id}`)
 
     try{
-	let getUser = await User.findById( user_id, 'details' )
+	let getUser = await User.findById( user_id )
 
 	// failure
 	if( getUser == null )
 	    return res.status(500).send(`user doesnot exist!`)
 
 	// success
-	return res.status(200).json({ details: getUser })
+	return res.status(200).json({ 
+	    firstName: getUser.details.firstName,
+	    lastName: getUser.details.lastName,
+	    email: getUser.details.email,
+	    phoneNo: getUser.details.phoneNo
+	})
 
     }catch(e){
 	console.log(`userDetails error: ${e}`)
