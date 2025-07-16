@@ -1,6 +1,9 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 
+// service
+import { ImageUpload } from '../services/imageUpload.service.js'
+// model
 import { User } from '../models/user.model.js'
 
 
@@ -23,13 +26,21 @@ export const SignUp = async ( req, res ) =>{
 	// hash password
 	password = await bcrypt.hash( password, 10 )
 
+	// upload profile photo
+	let profilePhoto = await ImageUpload(req.file.path)
+	if( profilePhoto == null ){ 
+	    console.log(`image upload failed!`)
+	    return res.status(400).send(`failed to upload image!`)
+	}
+
 	// create new user
 	const details = {
 	    firstName,
 	    lastName,
 	    email,
 	    password,
-	    phoneNo
+	    phoneNo,
+	    profilePhoto
 	}
 	const newUser = User({
 	    details

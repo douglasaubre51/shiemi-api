@@ -22,7 +22,8 @@ const userDetails = {
     phoneNo:{
 	type: Number,
 	required: true
-    }
+    },
+    profilePhoto: String
 }
 
 const userSchema = mongoose.Schema({
