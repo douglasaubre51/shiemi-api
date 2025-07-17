@@ -20,7 +20,8 @@ export const GetUserDetails = async ( req, res ) =>{
 	    firstName: getUser.details.firstName,
 	    lastName: getUser.details.lastName,
 	    email: getUser.details.email,
-	    phoneNo: getUser.details.phoneNo
+	    phoneNo: getUser.details.phoneNo,
+	    profilePhoto: getUser.details.profilePhoto
 	})
 
     }catch(e){
