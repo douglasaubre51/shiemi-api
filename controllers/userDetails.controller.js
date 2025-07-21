@@ -17,6 +17,7 @@ export const GetUserDetails = async ( req, res ) =>{
 
 	// success
 	return res.status(200).json({ 
+	    userId: user_id,
 	    firstName: getUser.details.firstName,
 	    lastName: getUser.details.lastName,
 	    email: getUser.details.email,
