@@ -1,36 +1,40 @@
 import mongoose from 'mongoose'
+import { Types } from 'mongoose'
 
 
 const userDetails = {
-    firstName:{
-	type: String,
-	required: true
+    firstName: {
+        type: String,
+        required: true
     },
-    lastName:{
-	type: String,
-	required: true
+    lastName: {
+        type: String,
+        required: true
     },
-    email:{
-	type: String,
-	required: true,
-	unique: true
+    email: {
+        type: String,
+        required: true,
+        unique: true
     },
-    password:{
-	type: String,
-	required: true
+    password: {
+        type: String,
+        required: true
     },
-    phoneNo:{
-	type: Number,
-	required: true
+    phoneNo: {
+        type: Number,
+        required: true
     },
     profilePhoto: String
 }
 
 const userSchema = mongoose.Schema({
     details: userDetails,
+
     isDev: Boolean,
     isAdmin: Boolean,
-    isMember: Boolean
+    isMember: Boolean,
+
+    projectIdList: [Types.ObjectId]
 })
 
 export const User = mongoose.model(
