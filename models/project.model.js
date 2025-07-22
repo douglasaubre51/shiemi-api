@@ -6,17 +6,21 @@ let projectSchema = mongoose.Schema({
     userId: Types.ObjectId,
     channelId: Types.ObjectId,
 
-    title: Types.String,
-    description: Types.String,
-    shortDescription: Types.String,
-    price: Types.Decimal128,
-    image: Types.String,
+    title: String,
+    description: String,
+    shortDescription: String,
+    image: String,
+
+    price: {
+        type: Types.Decimal128
+    },
 
     createdAt: {
-        type: Types.Date,
+        type: Date,
         default: Date.now
     },
-    endsAt: Types.Date,
+
+    endsAt: Date,
 })
 
 export const Project = mongoose.model(

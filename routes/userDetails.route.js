@@ -1,5 +1,7 @@
+// services
 import express from 'express'
 
+// controllers
 import { GetUserDetails } from '../controllers/userDetails.controller.js'
 
 

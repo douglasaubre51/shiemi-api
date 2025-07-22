@@ -10,7 +10,7 @@ let waitingRoomSchema = mongoose.Schema({
     blockIdList: [Types.ObjectId]
 })
 
-export const waitingRoom = mongoose.model(
+export const WaitingRoom = mongoose.model(
     "waiting_room",
     waitingRoomSchema
 )

@@ -5,13 +5,13 @@ import { Types } from "mongoose";
 let messageSchema = mongoose.Schema({
     senderId: Types.ObjectId,
 
-    image: Types.String,
-    voice: Types.String,
-    video: Types.String,
-    text: Types.String,
+    image: String,
+    voice: String,
+    video: String,
+    text: String,
 
     createdAt: {
-        type: Types.Date,
+        type: Date,
         default: Date.now
     }
 })
