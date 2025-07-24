@@ -39,3 +39,5 @@ logs/
 *.gzip
 *.zip
 
+# uploads
+uploads/
