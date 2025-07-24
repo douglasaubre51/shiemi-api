@@ -44,8 +44,23 @@ export const CreateNewProject = async (req, res) => {
 
 
 // GET: /project/getall/:userId
-export const GetAllByUserId = async (req, res) => {
-    let userId = req.body.userId
+export const GetAll = async (req, res) => {
+    let userId = req.query.userId
+    console.log(`user id: ${userId}`)
 
-    await Project.findOne()
+    try {
+
+        const projectsDto = await Project.find({ userId: userId })
+        if (projectsDto == null) {
+            console.log(`empty project list!`)
+            return res.status(500).send(`empty!`)
+        }
+
+        console.log(`sending projectsDto!`)
+        return res.status(200).json({ projectsDto: projectsDto })
+
+    } catch (e) {
+        console.log(`error fetching projects : ${e}`)
+        return res.status(500).send(`server error!`)
+    }
 }

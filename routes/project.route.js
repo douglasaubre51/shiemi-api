@@ -2,7 +2,7 @@
 import { Router } from 'express'
 
 // controllers
-import { CreateNewProject } from '../controllers/project.controller.js'
+import { CreateNewProject, GetAll } from '../controllers/project.controller.js'
 
 
 export const projectRouter = Router()
@@ -12,7 +12,7 @@ projectRouter.post(
     CreateNewProject
 )
 
-// projectRouter.get(
-//     '/project/getall/:projectId',
-
-// )
+projectRouter.get(
+    '/project/get-all',
+    GetAll
+)
