@@ -1,3 +1,6 @@
+// di
+import mongoose from 'mongoose'
+
 // models
 import { Project } from "../models/project.model.js"
 
@@ -13,28 +16,37 @@ export const CreateNewProject = async (req, res) => {
         title,
         description,
         shortDescription,
-        price,
-        endsAt
+        price
     } = req.body
 
     try {
-        const newProject = await Project.create({
-            userId,
-            title,
-            description,
-            shortDescription,
-            price,
-            endsAt
+        let newProject = null
+        let isProjectInitialized = false
+
+        // init session
+        const session = await mongoose.startSession()
+
+        await session.withTransaction(async () => {
+            newProject = await Project.create([{
+                userId,
+                title,
+                description,
+                shortDescription,
+                price
+            }],
+                { session }
+            )
+
+            isProjectInitialized = await ProjectInitializer(userId, newProject._id, session)
         })
+        session.endSession()
 
         // initialize project channels rooms
-        let isProjectInitialized = await ProjectInitializer(userId, newProject._id)
-        if (!isProjectInitialized)
+        if (!isProjectInitialized) {
             return res.status(500).send(`error initializing project!`)
+        }
 
-        return res.status(201).json({
-            projectId: newProject._id.toString()
-        })
+        return res.status(201).send(`project created successfully!`);
 
     } catch (e) {
         console.log(`createNewProject error: ${e}`)

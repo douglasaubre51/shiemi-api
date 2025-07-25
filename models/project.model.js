@@ -18,9 +18,7 @@ let projectSchema = mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    },
-
-    endsAt: Date,
+    }
 })
 
 export const Project = mongoose.model(

@@ -5,7 +5,7 @@ import { WaitingRoom } from "../models/waitingRoom.model.js"
 import { User } from "../models/user.model.js"
 
 
-export const ProjectInitializer = async (userId, projectId) => {
+export const ProjectInitializer = async (userId, projectId, session) => {
     try {
         // add to user
         await User.updateOne(
@@ -14,18 +14,22 @@ export const ProjectInitializer = async (userId, projectId) => {
                 $push: {
                     projectIdList: projectId
                 }
-            }
+            },
+            { session }
         )
 
         // create message, waiting rooms
-        const messageRoom = await MessageRoom.create({})
-        const waitingRoom = await WaitingRoom.create({})
+        const messageRoom = await MessageRoom.create([{}], { session })
+        const waitingRoom = await WaitingRoom.create([{}], { session })
 
         // create channel
-        const channel = await Channel.create({
-            messageRoomId: messageRoom._id,
-            waitingRoomId: waitingRoom._id
-        })
+        const channel = await Channel.create(
+            [{
+                messageRoomId: messageRoom._id,
+                waitingRoomId: waitingRoom._id
+            }],
+            { session }
+        )
 
         // add to project
         await Project.updateOne(
@@ -33,7 +37,8 @@ export const ProjectInitializer = async (userId, projectId) => {
             {
                 $set:
                     { channelId: channel._id }
-            }
+            },
+            { session }
         )
 
         return true
