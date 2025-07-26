@@ -8,8 +8,48 @@ import { Project } from "../models/project.model.js"
 import { ProjectInitializer } from "../services/projectInitializer.service.js"
 
 
+// GET: /project/get-all
+export const GetAll = async (req, res) => {
+    try {
+
+        const projects = await Project.find()
+        return res.status(200).json({ projectsDto: projects })
+    }
+    catch (e) {
+
+        console.log(`getall projects error:${e}`)
+        return res.status(500).send(`server error`)
+    }
+}
+
+
+// GET: /project/getall/:userId
+export const GetAllByUserId = async (req, res) => {
+
+    let userId = req.query.userId
+    console.log(`user id: ${userId}`)
+    try {
+
+        const projectsDto = await Project.find({ userId: userId })
+        if (projectsDto == null) {
+            console.log(`empty project list!`)
+            return res.status(500).send(`empty!`)
+        }
+
+        console.log(`sending projectsDto!`)
+        return res.status(200).json({ projectsDto: projectsDto })
+
+    } catch (e) {
+
+        console.log(`error fetching projects : ${e}`)
+        return res.status(500).send(`server error!`)
+    }
+}
+
+
 // POST: /project/create
 export const CreateNewProject = async (req, res) => {
+
     let {
         userId,
 
@@ -20,12 +60,12 @@ export const CreateNewProject = async (req, res) => {
     } = req.body
 
     try {
+
         let newProject = null
         let isProjectInitialized = false
 
         // init session
         const session = await mongoose.startSession()
-
         await session.withTransaction(async () => {
             newProject = await Project.create([{
                 userId,
@@ -49,30 +89,8 @@ export const CreateNewProject = async (req, res) => {
         return res.status(201).send(`project created successfully!`);
 
     } catch (e) {
+
         console.log(`createNewProject error: ${e}`)
         return res.status(500).end()
-    }
-}
-
-
-// GET: /project/getall/:userId
-export const GetAll = async (req, res) => {
-    let userId = req.query.userId
-    console.log(`user id: ${userId}`)
-
-    try {
-
-        const projectsDto = await Project.find({ userId: userId })
-        if (projectsDto == null) {
-            console.log(`empty project list!`)
-            return res.status(500).send(`empty!`)
-        }
-
-        console.log(`sending projectsDto!`)
-        return res.status(200).json({ projectsDto: projectsDto })
-
-    } catch (e) {
-        console.log(`error fetching projects : ${e}`)
-        return res.status(500).send(`server error!`)
     }
 }
