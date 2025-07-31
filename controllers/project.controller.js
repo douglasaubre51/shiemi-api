@@ -16,7 +16,7 @@ export const EditProfile = async (req, res) => {
     try {
         const project = new ProjectDto(req.body)
 
-        await Project.update(
+        await Project.updateOne(
             { userId: project.userId },
             {
                 $set: {
