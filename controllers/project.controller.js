@@ -4,9 +4,37 @@ import mongoose from 'mongoose'
 // models
 import { Project } from "../models/project.model.js"
 
+// dtos
+import { ProjectDto } from '../dtos/project.dto.js'
+
 // services
 import { ProjectInitializer } from "../services/projectInitializer.service.js"
 
+
+// POST: /project/edit-profile
+export const EditProfile = async (req, res) => {
+    try {
+        const project = new ProjectDto(req.body)
+
+        await Project.update(
+            { userId: project.userId },
+            {
+                $set: {
+                    title: project.title,
+                    price: project.price,
+                    shortDescription: project.shortDescription,
+                    Description: project.Description,
+                }
+            }
+        )
+
+        return res.status(200).end()
+    }
+    catch (e) {
+        console.log(`EditProfile error: ${e}`)
+        return res.status(500).end()
+    }
+}
 
 // GET: /project/get-all
 export const GetAll = async (req, res) => {
