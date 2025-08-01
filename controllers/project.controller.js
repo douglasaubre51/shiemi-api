@@ -15,18 +15,21 @@ import { ProjectInitializer } from "../services/projectInitializer.service.js"
 export const EditProfile = async (req, res) => {
     try {
         const project = new ProjectDto(req.body)
+        console.log(`req obj : ${project.projectId}`)
 
-        await Project.updateOne(
-            { userId: project.userId },
+        const obj =  await Project.findByIdAndUpdate(
+            project.projectId,
             {
                 $set: {
-                    title: project.title,
-                    price: project.price,
-                    shortDescription: project.shortDescription,
-                    Description: project.Description,
-                }
+                     title: project.title,
+                     description: project.description,
+                     shortDescription: project.shortDescription,
+                     price: project.price,
+                 }
             }
         )
+
+        console.log(`edited project: ${obj}`)
 
         return res.status(200).end()
     }
