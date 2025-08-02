@@ -9,6 +9,7 @@ import cloudinary from 'cloudinary'
 import { authRouter } from './routes/auth.route.js'
 import { userRouter } from './routes/userDetails.route.js'
 import { projectRouter } from './routes/project.route.js'
+import { settingsRouter } from './routes/settings.route.js'
 
 
 // cloudinary setup
@@ -46,6 +47,7 @@ mongoose.connect(
 app.use(authRouter)
 app.use(userRouter)
 app.use(projectRouter)
+app.use(settingsRouter)
 
 // start api
 app.listen(
